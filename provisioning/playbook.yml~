@@ -1,0 +1,18 @@
+- hosts: all
+  sudo: yes
+
+  tasks:
+  - name: actualizar sistema
+    apt: upgrade=dist update_cache=yes
+  - name: instalar utilidades básicas
+    apt: name={{ item }} state=latest
+    with_items:
+      - fail2ban
+      - vim
+      - htop
+      - elinks
+  - name: instalar apache2
+    apt: name=apache2 state=latest
+  #- name: cambiar pagina predeterminada
+
+
