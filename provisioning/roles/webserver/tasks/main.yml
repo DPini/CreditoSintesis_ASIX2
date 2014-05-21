@@ -1,6 +1,15 @@
     # Instalamos Apache 2 mediante apt, indicamos que se instale la última versión.
   - name: instalar apache2
     apt: name=apache2 state=latest
+    # Instalamos php
+  - name: instalar php
+    apt: name={{ item }} state=latest
+    with_items:
+      - php5
+      - php5-mcrypt
+      - libapache2-mod-php5
+      - php5-mysql
+    notify: reiniciar apache2
     # Copiamos nuestro fichero HTML modificado, para ver que no queda la versión por defecto.
   - name: copiar nuestro index
     copy: src=index.html dest=/var/www/html/index.html owner='www-data'

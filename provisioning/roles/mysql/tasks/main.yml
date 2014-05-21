@@ -1,4 +1,6 @@
     # Instalamos MySQL mediante apt, indicamos que se instale la última versión.
   - name: instalar mysql
-    apt: name=mysql-server state=latest
-
+    apt: name={{ item }} state=latest
+    with_items:
+    - mysql-server
+    - python-mysqldb

@@ -1,6 +1,37 @@
-    # Instalamos Apache 2 mediante apt, indicamos que se instale la última versión.
-  - name: instalar apache2
-    apt: name=apache2 state=latest
-    # Copiamos nuestro fichero HTML modificado, para ver que no queda la versión por defecto.
-  - name: copiar nuestro index
-    copy: src=index.html dest=/var/www/html/index.html owner='www-data'
+---
+# Descargamos Wordpress 
+- name: Descargamos Wordpress
+  get_url: url=http://es.wordpress.org/wordpress-3.9.1-es_ES.tar.gz dest=/var/www/html/
+
+# Descomprimimos wordpress
+- name: Extraemos ficheros de Wordpress
+  command: chdir=/var/www/html/ /bin/tar xvf wordpress-3.9.1-es_ES.tar.gz creates=/var/www/html/wordpress
+
+#Eliminamos el comprimido
+- name: Eliminamos .tar.gz de wordpress
+  command: chdir=/var/www/html rm wordpress-3.9.1-es_ES.tar.gz
+
+#Cambiamos nombre de wordpress por blog
+- name: Renombramos diretorio wordpress
+  command: chdir=/var/www/html mv wordpress blog
+
+#Creamos la base de datos de wordpress
+- name: Crear base de datos Wordpress
+  mysql_db: name=blog state=present
+
+- name: Fetch random salts for Wordpress config
+  local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
+  register: "wp_salt"
+  sudo: no
+
+ #Creamos usuarios en la base de datos de Wordpress
+- name: Creamos usuario para la base de datos de Wordpress
+  mysql_user: name=wordpress password=1234 priv=blog.*:ALL host='localhost' state=present
+
+ #Copiamos el fichero de configuración de Wordpress
+- name: Copiamos el fichero de configuración de wordpress
+  template: src=wp-config.php dest=/var/www/html/blog/
+
+#Cambiar permisos de la instalacion de wordpress
+- name: Cambiar permisos de la instalación wordpress
+  file: path=/var/www/html/blog owner=www-data group=www-data state=directory recurse=yes
