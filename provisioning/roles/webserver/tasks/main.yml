@@ -1,0 +1,6 @@
+    # Instalamos Apache 2 mediante apt, indicamos que se instale la última versión.
+  - name: instalar apache2
+    apt: name=apache2 state=latest
+    # Copiamos nuestro fichero HTML modificado, para ver que no queda la versión por defecto.
+  - name: copiar nuestro index
+    copy: src=index.html dest=/var/www/html/index.html owner='www-data'

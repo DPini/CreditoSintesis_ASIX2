@@ -3,22 +3,6 @@
 # Se usará sudo para ejecutar los comandos que lo requieran
   sudo: yes
 # Empezamos a definir las tareas a ejecutar
-  tasks:
-  # Actualizamos el sistema, mediante el módulo apt
-  - name: actualizar sistema
-    apt: upgrade=dist update_cache=yes
-    # Instalamos aplicaciones útiles mediante el módulo apt. Usamos un loop para especificar la lista de aplicaciones
-  - name: instalar utilidades básicas
-    apt: name={{ item }} state=latest
-    with_items:
-      - fail2ban
-      - vim
-      - htop
-      - elinks
-    # Instalamos Apache 2 mediante apt, indicamos que se instale la última versión.
-  - name: instalar apache2
-    apt: name=apache2 state=latest
-    # Copiamos nuestro fichero HTML modificado, para ver que no queda la versión por defecto.
-  - name: copiar nuestro index
-    copy: src=files/index.html dest=/var/www/html/index.html owner='www-data'
-
+  roles:
+    - common
+    - webserver

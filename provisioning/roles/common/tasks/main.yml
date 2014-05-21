@@ -1,0 +1,12 @@
+---  
+  # Actualizamos el sistema, mediante el módulo apt
+  - name: actualizar sistema
+    apt: upgrade=dist update_cache=yes
+    # Instalamos aplicaciones útiles mediante el módulo apt. Usamos un loop para especificar la lista de aplicaciones
+  - name: instalar utilidades básicas
+    apt: name={{ item }} state=latest
+    with_items:
+      - fail2ban
+      - vim
+      - htop
+      - elinks
