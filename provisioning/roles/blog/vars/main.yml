@@ -1,0 +1,12 @@
+#Version
+wp_version: 3.9.1
+
+
+#Usuario Base de datos
+wp_db_blog: blog
+wp_db_user: wordpress
+wp_db_password: 1234
+wp_db_priv: blog
+
+# Directorio de wordpress
+blog_dir: blog
