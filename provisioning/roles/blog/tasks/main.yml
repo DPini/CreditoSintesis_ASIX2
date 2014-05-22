@@ -11,12 +11,12 @@
 
 # Descomprimimos wordpress
 - name: Extraemos ficheros de Wordpress
-  command: chdir=/var/www/html/ /bin/tar xvf wordpress-{{ wp_version }}-es_ES.tar.gz creates=/tmp/wordpress
+  command: chdir=/tmp /bin/tar xvf wordpress-{{ wp_version }}-es_ES.tar.gz creates=/tmp/wordpress
   when: blog_path.stat.exists == false
 
 #Eliminamos el comprimido
 - name: Eliminamos .tar.gz de wordpress
-  command: chdir=/var/www/html rm wordpress-{{ wp_version }}-es_ES.tar.gz
+  command: chdir=/tmp rm wordpress-{{ wp_version }}-es_ES.tar.gz
   when: blog_path.stat.exists == false
 
 #Movemos el directorio Wordpress a su sitio
