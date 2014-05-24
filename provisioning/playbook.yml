@@ -1,5 +1,5 @@
 # Indicamos que las tareas del playbook se ejecutarán en todas las máquinas
-- hosts: all
+- hosts: web
 # Se usará sudo para ejecutar los comandos que lo requieran
   sudo: yes
 # Empezamos a definir las tareas a ejecutar
@@ -8,3 +8,9 @@
     - webserver
     - mysql
     - blog
+
+- hosts: dns
+  sudo: yes
+  roles:
+   - common
+   - dns

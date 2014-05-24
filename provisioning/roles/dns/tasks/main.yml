@@ -1,0 +1,16 @@
+---
+- name: instalar bind9
+  apt: name={{ item }} state=latest
+  with_items:
+    - bind9
+    - dnsutils
+
+- name: crear directorio para zonas maestras
+  file: dest=/etc/bind/master state=directory group=bind
+
+- name: copiar named.conf.local
+  template: src=named.conf.local dest=/etc/bind/ group=bind
+
+- name: copiar zona maestra
+  template: src=db.dominio dest=/etc/bind/master/db.{{ dominio }}
+  notify: reiniciar bind9
